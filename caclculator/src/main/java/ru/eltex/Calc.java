@@ -29,7 +29,7 @@ public class Calc{
                 else {
                     System.out.println("Error: divide by ZERO!!!");
                     return;
-				}
+                }
             } break;
             
             default: { System.out.println("Error: Unknown operation"); return; }
