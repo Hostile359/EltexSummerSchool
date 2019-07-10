@@ -5,6 +5,14 @@ public class Sales{
     private String name;
     private Integer price;
     
+    public void printInf() {
+        
+        System.out.println("Sale id: " + this.id);
+        System.out.println("Sale name: " + this.name);
+        System.out.println("Sale price: " + this.price);
+        System.out.println();
+    }
+    
     public Integer getId () {
 
 		return this.id;
@@ -44,7 +52,7 @@ public class Sales{
 	public Integer fromCSV(String str) {
 
 		String [] arg = str.split(";");
-        if(arg.length == 2) {
+        if(arg.length == 3) {
             setId (arg [0]);
             setName (arg [1]);
             setPrice (arg [2]);
