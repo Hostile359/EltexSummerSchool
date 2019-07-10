@@ -18,12 +18,13 @@ public class Developer extends User{
         for(int i = 0; i < this.lang.size(); i++)
             System.out.print(this.lang.get(i) + " ");
         System.out.println();
+        System.out.println();
     }
 
 	public String toCSV() {
         String temp = "";
         for(int i = 0; i < this.lang.size(); i++)
-            temp += this.lang.get(i) + "=";
+            temp += this.lang.get(i) + ">";
         temp = temp.substring(0, temp.length() - 1);
 		return Integer.toString(this.id) + ";" + this.fio + ";" + this.phone + ";" + this.email + ";" + temp + ";";
 	}
@@ -35,7 +36,7 @@ public class Developer extends User{
             setFio (arg [1]);
             setPhone (arg [2]);
             setEmail (arg [3]);
-            String [] argg = arg[4].split("=");
+            String [] argg = arg[4].split(">");
             for(int i = 0; i < argg.length; i++)
                 this.addLang(argg[i]);
         }else 
