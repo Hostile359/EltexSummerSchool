@@ -1,0 +1,16 @@
+apply plugin: "java"
+apply plugin: "application"
+mainClassName  = "ru.eltex.Main"
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.+'
+    compile files('libs/a.jar', 'libs/b.jar')
+    compile fileTree(dir: 'libs', include: '*.jar')
+}
+
+run {
+	standardInput = System.in	
+}
