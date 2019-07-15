@@ -81,8 +81,8 @@ public class Main{
             //System.out.println("/proc/" + pid); //+ "/");
             System.out.println(pid);
             if(!pid.equals("q")) {
-                //Path kill = Paths.get("/proc/" + pid); //+ "/");
-                Path kill = Paths.get(pid); //+ "/");
+                Path kill = Paths.get("/proc/" + pid + "/");
+                //Path kill = Paths.get(pid); //+ "/");
                 deldir(kill);
             }
         }
