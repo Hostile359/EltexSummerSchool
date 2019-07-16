@@ -7,10 +7,20 @@ repositories {
 }
 dependencies {
     compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.+'
-    compile files('libs/a.jar', 'libs/b.jar')
     compile fileTree(dir: 'libs', include: '*.jar')
 }
 
 run {
 	standardInput = System.in	
+}
+
+task fatJar(type: Jar) {
+	manifest {
+		attributes 'Implementation-Title': 'Gradle Jar File Example',
+		'Implementation-Version': '1.0',
+		'Main-Class': 'ru.eltex.Main'
+	}
+	baseName = project.name + '-all'
+	from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+	with jar
 }
