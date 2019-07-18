@@ -26,14 +26,24 @@ public class Manager extends User{
         System.out.println();
         System.out.println();
     }
-
-	public String toCSV() {
+    
+    public String getSales() {
         String temp = "";
         for(int i = 0; i < this.sale_id.size(); i++)
             temp += Integer.toString(this.sale_id.get(i)) + "="
                 + Integer.toString(this.count_of_sales.get(i)) + ">";
-                
         temp = temp.substring(0, temp.length() - 1);
+                
+        return temp;
+    }
+    
+	public String toCSV() {
+        String temp = this.getSales();
+        /*for(int i = 0; i < this.sale_id.size(); i++)
+            temp += Integer.toString(this.sale_id.get(i)) + "="
+                + Integer.toString(this.count_of_sales.get(i)) + ">";
+                
+        temp = temp.substring(0, temp.length() - 1);*/
 		return Integer.toString(this.id) + ";" + this.fio + ";" + this.phone + ";" + this.email + ";" + temp + ";";
 	}
 
@@ -52,6 +62,12 @@ public class Manager extends User{
         
         return 0;
     }
+    
+    public void setSales (String arg) {
+        String [] argg = arg.split(">");
+        for(int i = 0; i < argg.length; i++)
+            this.addSales(argg[i]);
+	}
     
     public void addSales (String arg) {
         

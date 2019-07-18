@@ -20,12 +20,21 @@ public class Developer extends User{
         System.out.println();
         System.out.println();
     }
-
-	public String toCSV() {
+    
+    public String getLang() {
         String temp = "";
         for(int i = 0; i < this.lang.size(); i++)
             temp += this.lang.get(i) + ">";
         temp = temp.substring(0, temp.length() - 1);
+        
+        return temp;
+    }
+    
+	public String toCSV() {
+        String temp = this.getLang();
+        //for(int i = 0; i < this.lang.size(); i++)
+            //temp += this.lang.get(i) + ">";
+        //temp = temp.substring(0, temp.length() - 1);
 		return Integer.toString(this.id) + ";" + this.fio + ";" + this.phone + ";" + this.email + ";" + temp + ";";
 	}
 
@@ -45,6 +54,12 @@ public class Developer extends User{
         return 0;
     }
     
+    public void setLangs (String arg) {
+        String [] argg = arg.split(">");
+        for(int i = 0; i < argg.length; i++)
+            this.addLang(argg[i]);
+	}
+    
     public void addLang (String arg) {
 
         this.lang.add(arg);
@@ -54,4 +69,5 @@ public class Developer extends User{
 
         this.lang.remove(arg);
 	}
+        
 }

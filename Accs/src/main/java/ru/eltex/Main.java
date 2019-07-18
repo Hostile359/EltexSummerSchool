@@ -2,13 +2,139 @@ package ru.eltex;
 
 import java.util.ArrayList;
 import java.io.*;
-import java.util.Scanner; 
+import java.util.Scanner;
+import java.sql.*; 
 
 public class Main{
+    
+    public static void dev_to_SQL(String sql_url, ArrayList<Developer> devs) throws SQLException{
+        Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
+        Statement statement = connection.createStatement();
+        
+        for (int j = 0; j < devs.size(); ++j) {
+            Integer id = devs.get(j).getId();
+            ResultSet check = statement.executeQuery("SELECT id FROM developer WHERE id=" + id + ";"); // получение записей
+            if(!check.next()) {
+                String fio = devs.get(j).getFio();
+                String phone = devs.get(j).getPhone();
+                String email = devs.get(j).getEmail();
+                String langs = devs.get(j).getLang();
+                String into = "(" + id + ", '" + fio + "', '" + phone + "', '" + email + "', '" + langs + "');";
+                statement.executeUpdate("INSERT INTO developer VALUE" + into); // добавление/удаление/изменение записей
+            }else
+                continue;
+        }
+        
+        
+        connection.close(); // отключение от БД
+    }
+    
+    public static void dev_from_SQL(String sql_url, ArrayList<Developer> devs) throws SQLException{
+        Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM developer;"); // получение записей
+        System.out.println("From SQL: ");
+        Integer j = 0;
+        while (resultSet.next()){ // проход по полученным записям
+            Developer temp = new Developer();
+            temp.setId(resultSet.getString("id"));
+            temp.setFio(resultSet.getString("fio"));
+            temp.setPhone(resultSet.getString("phone"));
+            temp.setEmail(resultSet.getString("email"));
+            temp.setLangs(resultSet.getString("languages"));
+            temp.printInf();
+            devs.add(temp);
+        }
+        System.out.println();
+        connection.close(); // отключение от БД
+    }
+    
+    public static void man_to_SQL(String sql_url, ArrayList<Manager> mans) throws SQLException{
+        Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
+        Statement statement = connection.createStatement();
+        
+        for (int j = 0; j < mans.size(); ++j) {
+            Integer id = mans.get(j).getId();
+            ResultSet check = statement.executeQuery("SELECT id FROM manager WHERE id=" + id + ";"); // получение записей
+            if(!check.next()) {
+                String fio = mans.get(j).getFio();
+                String phone = mans.get(j).getPhone();
+                String email = mans.get(j).getEmail();
+                String sales = mans.get(j).getSales();
+                String into = "(" + id + ", '" + fio + "', '" + phone + "', '" + email + "', '" + sales + "');";
+                statement.executeUpdate("INSERT INTO manager VALUE" + into); // добавление/удаление/изменение записей
+            }else
+                continue;
+        }
+        
+        
+        connection.close(); // отключение от БД
+    }
+    
+    public static void man_from_SQL(String sql_url, ArrayList<Manager> mans) throws SQLException{
+        Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM manager;"); // получение записей
+        System.out.println("From SQL: ");
+        Integer j = 0;
+        while (resultSet.next()){ // проход по полученным записям
+            Manager temp = new Manager();
+            temp.setId(resultSet.getString("id"));
+            temp.setFio(resultSet.getString("fio"));
+            temp.setPhone(resultSet.getString("phone"));
+            temp.setEmail(resultSet.getString("email"));
+            temp.setSales(resultSet.getString("sales"));
+            temp.printInf();
+            mans.add(temp);
+        }
+        System.out.println();
+        connection.close(); // отключение от БД
+    }
+    
+    public static void sal_to_SQL(String sql_url, ArrayList<Sales> sales) throws SQLException{
+        Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
+        Statement statement = connection.createStatement();
+        
+        for (int j = 0; j < sales.size(); ++j) {
+            Integer id = sales.get(j).getId();
+            ResultSet check = statement.executeQuery("SELECT id FROM sales WHERE id=" + id + ";"); // получение записей
+            if(!check.next()) {
+                String name = sales.get(j).getName();
+                Integer price = sales.get(j).getPrice();
+                String into = "(" + id + ", '" + name + "', '" + price + "');";
+                statement.executeUpdate("INSERT INTO sales VALUE" + into); // добавление/удаление/изменение записей
+            }else
+                continue;
+        }
+        
+        
+        connection.close(); // отключение от БД
+    }
+    
+    public static void sal_from_SQL(String sql_url, ArrayList<Sales> sales) throws SQLException{
+        Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM sales;"); // получение записей
+        System.out.println("From SQL: ");
+        Integer j = 0;
+        while (resultSet.next()){ // проход по полученным записям
+            Sales temp = new Sales();
+            temp.setId(resultSet.getString("id"));
+            temp.setName(resultSet.getString("name"));
+            temp.setPrice(resultSet.getString("price"));            
+            temp.printInf();
+            sales.add(temp);
+        }
+        System.out.println();
+        connection.close(); // отключение от БД
+    }
+    
+    
     public static void main(String args[]){
+        String DB_URL = "jdbc:mysql://localhost:3306/users";
         Integer quit = 0;
         while (quit == 0) {
-            System.out.println("1-Developers info");
+            System.out.println("\n\n1-Developers info");
             System.out.println("2-Managers info");
             System.out.println("3-Sales info");
             System.out.println("q-Exit");
@@ -19,13 +145,14 @@ public class Main{
             switch(op) {
                 case '1': {
                     ArrayList<Developer> devs = new ArrayList<Developer>();
+                    ArrayList<Developer> devs_out = new ArrayList<Developer>();
                     
                     try {
                         FileReader fr = new FileReader ("files/dev.csv");
                         Scanner scan = new Scanner(fr);
 
                         for (int j = 0; scan.hasNextLine(); ++j) {
-                             String input_str;
+                            String input_str;
                             input_str = scan.nextLine();
                             System.out.println(input_str);
                             Developer temp = new Developer();
@@ -45,20 +172,28 @@ public class Main{
                     }
                     
                     try {
-                        FileWriter fw = new FileWriter ("files/dev_output.csv");
-                        for (int i = 0; i < devs.size(); ++i) {
-                            fw.write(devs.get(i).toCSV() + "\n");
+                        dev_to_SQL(DB_URL, devs);
+                        dev_from_SQL(DB_URL, devs_out);
+                        
+                        try {
+                            FileWriter fw = new FileWriter ("files/dev_output.csv");
+                            for (int i = 0; i < devs_out.size(); ++i) {
+                                fw.write(devs_out.get(i).toCSV() + "\n");
+                            }
+                            fw.close();
+                        } catch (IOException error) {
+                            System.err.print(error.getMessage()); 
                         }
-                        fw.close();
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
                     }
-                    catch (IOException error) {
-                        System.err.print(error.getMessage()); 
-                    }
+                    
                 } break;
                 
                 case '2': {
                 
                     ArrayList<Manager> man = new ArrayList<Manager>();
+                    ArrayList<Manager> man_out = new ArrayList<Manager>();
                     
                     try {
                         FileReader fr = new FileReader ("files/man.csv");
@@ -85,21 +220,30 @@ public class Main{
                     }
                     
                     try {
-                        FileWriter fw = new FileWriter ("files/man_output.csv");
-                        for (int i = 0; i < man.size(); ++i) {
-                            fw.write(man.get(i).toCSV() + "\n");
+                        man_to_SQL(DB_URL, man);
+                        man_from_SQL(DB_URL, man_out);
+                        
+                        try {
+                            FileWriter fw = new FileWriter ("files/man_output.csv");
+                            for (int i = 0; i < man_out.size(); ++i) {
+                                fw.write(man_out.get(i).toCSV() + "\n");
+                            }
+                            fw.close();
+                        } catch (IOException error) {
+                            System.err.print(error.getMessage()); 
                         }
-                        fw.close();
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
                     }
-                    catch (IOException error) {
-                        System.err.print(error.getMessage()); 
-                    }
+                    
+                    
                 } break;
                 
                 
                 case '3': {
                     
                     ArrayList<Sales> sal = new ArrayList<Sales>();
+                    ArrayList<Sales> sal_out = new ArrayList<Sales>();
                     
                     try {
                         FileReader fr = new FileReader ("files/sales.csv");
@@ -126,15 +270,21 @@ public class Main{
                     }
                     
                     try {
-                        FileWriter fw = new FileWriter ("files/sales_output.csv");
-                        for (int i = 0; i < sal.size(); ++i) {
-                            fw.write(sal.get(i).toCSV() + "\n");
+                        sal_to_SQL(DB_URL, sal);
+                        sal_from_SQL(DB_URL, sal_out);
+                        try {
+                            FileWriter fw = new FileWriter ("files/sales_output.csv");
+                            for (int i = 0; i < sal_out.size(); ++i) {
+                                fw.write(sal_out.get(i).toCSV() + "\n");
+                            }
+                            fw.close();
+                        } catch (IOException error) {
+                            System.err.print(error.getMessage()); 
                         }
-                        fw.close();
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
                     }
-                    catch (IOException error) {
-                        System.err.print(error.getMessage()); 
-                    }
+                    
                 } break;
                 
                 case 'q': { quit = 1; }
