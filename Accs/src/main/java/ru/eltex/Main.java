@@ -155,6 +155,23 @@ public class Main{
         connection.close(); // отключение от БД
     }
 
+    public static void unionPrint() throws SQLException{
+        Connection connection = DriverManager.getConnection(DB_URL, username, password); //соединение с БД
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT id, fio, phone, email FROM developer UNION SELECT id, fio, phone, email FROM manager;"); // получение записей
+        System.out.println("Union select(SQL): ");
+        Integer j = 0;
+        System.out.printf("ID | fio     | phone        | email\n");
+        while (resultSet.next()){ // проход по полученным записям
+            System.out.printf("%-3s|", resultSet.getString("id"));
+            System.out.printf(" %-7s |", resultSet.getString("fio"));
+            System.out.printf(" %-12s |", resultSet.getString("phone"));
+            System.out.printf(" %s\n", resultSet.getString("email"));
+        }
+        System.out.println();
+        connection.close(); // отключение от БД
+    }
+
     public static void main(String args[]) {
 
         try {
@@ -175,8 +192,9 @@ public class Main{
             System.out.println("\n\n1-Developers info");
             System.out.println("2-Managers info");
             System.out.println("3-Sales info");
+            System.out.println("4-Union developers and managers info");
             System.out.println("q-Exit");
-            System.out.println("Enter 1,2,3 or q: ");
+            System.out.println("Enter 1,2,3,4 or q: ");
             Scanner in = new Scanner(System.in);
             Character op = in.next().charAt(0);
             
@@ -324,7 +342,15 @@ public class Main{
                     }
                     
                 } break;
-                
+
+                case '4': {
+                    try {
+                        unionPrint();
+                    } catch (SQLException e) {
+                        System.out.println(e.getMessage());
+                    }
+                } break;
+
                 case 'q': { quit = 1; }
             }
         }
