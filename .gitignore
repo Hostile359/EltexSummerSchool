@@ -1,5 +1,9 @@
 .gradle
 build
+gradle
 *.tmp
 *output*.*
 target
+.idea
+gradlew
+gradlew.bat
