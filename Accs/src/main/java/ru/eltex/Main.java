@@ -2,10 +2,15 @@ package ru.eltex;
 
 import java.util.ArrayList;
 import java.io.*;
+import java.util.Properties;
 import java.util.Scanner;
 import java.sql.*; 
 
 public class Main{
+
+    private static String DB_URL;
+    private static String username;
+    private static String password;
     
     public static void dev_to_SQL(String sql_url, ArrayList<Developer> devs) throws SQLException{
         Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
@@ -21,8 +26,7 @@ public class Main{
                 String langs = devs.get(j).getLang();
                 String into = "(" + id + ", '" + fio + "', '" + phone + "', '" + email + "', '" + langs + "');";
                 statement.executeUpdate("INSERT INTO developer VALUE" + into); // добавление/удаление/изменение записей
-            }else
-                continue;
+            }
         }
         
         
@@ -63,8 +67,7 @@ public class Main{
                 String sales = mans.get(j).getSales();
                 String into = "(" + id + ", '" + fio + "', '" + phone + "', '" + email + "', '" + sales + "');";
                 statement.executeUpdate("INSERT INTO manager VALUE" + into); // добавление/удаление/изменение записей
-            }else
-                continue;
+            }
         }
         
         
@@ -103,8 +106,7 @@ public class Main{
                 Integer price = sales.get(j).getPrice();
                 String into = "(" + id + ", '" + name + "', '" + price + "');";
                 statement.executeUpdate("INSERT INTO sales VALUE" + into); // добавление/удаление/изменение записей
-            }else
-                continue;
+            }
         }
         
         
@@ -129,9 +131,26 @@ public class Main{
         connection.close(); // отключение от БД
     }
     
-    
-    public static void main(String args[]){
-        String DB_URL = "jdbc:mysql://localhost:3306/users";
+    public static void getProp(String file) throws IOException{
+        FileInputStream fis;
+        Properties property = new Properties();
+        fis = new FileInputStream(file);
+        property.load(fis);
+        DB_URL = property.getProperty("db.host");
+        username = property.getProperty("db.login");
+        password = property.getProperty("db.password");
+        fis.close();
+    }
+
+    public static void main(String args[]) {
+
+        try {
+            getProp("src/main/resources/db.properties");
+        } catch (IOException e) {
+            System.err.println("ERROR: properties file doesn't exist!");
+            return;
+        }
+
         Integer quit = 0;
         while (quit == 0) {
             System.out.println("\n\n1-Developers info");
