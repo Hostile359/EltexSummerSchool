@@ -12,8 +12,8 @@ public class Main{
     private static String username;
     private static String password;
     
-    public static void dev_to_SQL(String sql_url, ArrayList<Developer> devs) throws SQLException{
-        Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
+    public static void dev_to_SQL(ArrayList<Developer> devs) throws SQLException{
+        Connection connection = DriverManager.getConnection(DB_URL, username, password); //соединение с БД
         Statement statement = connection.createStatement();
         
         for (int j = 0; j < devs.size(); ++j) {
@@ -33,8 +33,8 @@ public class Main{
         connection.close(); // отключение от БД
     }
     
-    public static void dev_from_SQL(String sql_url, ArrayList<Developer> devs) throws SQLException{
-        Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
+    public static void dev_from_SQL(ArrayList<Developer> devs) throws SQLException{
+        Connection connection = DriverManager.getConnection(DB_URL, username, password); //соединение с БД
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM developer;"); // получение записей
         System.out.println("From SQL: ");
@@ -53,8 +53,8 @@ public class Main{
         connection.close(); // отключение от БД
     }
     
-    public static void man_to_SQL(String sql_url, ArrayList<Manager> mans) throws SQLException{
-        Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
+    public static void man_to_SQL(ArrayList<Manager> mans) throws SQLException{
+        Connection connection = DriverManager.getConnection(DB_URL, username, password); //соединение с БД
         Statement statement = connection.createStatement();
         
         for (int j = 0; j < mans.size(); ++j) {
@@ -74,8 +74,8 @@ public class Main{
         connection.close(); // отключение от БД
     }
     
-    public static void man_from_SQL(String sql_url, ArrayList<Manager> mans) throws SQLException{
-        Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
+    public static void man_from_SQL(ArrayList<Manager> mans) throws SQLException{
+        Connection connection = DriverManager.getConnection(DB_URL, username, password); //соединение с БД
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM manager;"); // получение записей
         System.out.println("From SQL: ");
@@ -94,8 +94,8 @@ public class Main{
         connection.close(); // отключение от БД
     }
     
-    public static void sal_to_SQL(String sql_url, ArrayList<Sales> sales) throws SQLException{
-        Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
+    public static void sal_to_SQL(ArrayList<Sales> sales) throws SQLException{
+        Connection connection = DriverManager.getConnection(DB_URL, username, password); //соединение с БД
         Statement statement = connection.createStatement();
         
         for (int j = 0; j < sales.size(); ++j) {
@@ -113,8 +113,8 @@ public class Main{
         connection.close(); // отключение от БД
     }
     
-    public static void sal_from_SQL(String sql_url, ArrayList<Sales> sales) throws SQLException{
-        Connection connection = DriverManager.getConnection(sql_url, "root", "123"); //соединение с БД
+    public static void sal_from_SQL(ArrayList<Sales> sales) throws SQLException{
+        Connection connection = DriverManager.getConnection(DB_URL, username, password); //соединение с БД
         Statement statement = connection.createStatement();
         ResultSet resultSet = statement.executeQuery("SELECT * FROM sales;"); // получение записей
         System.out.println("From SQL: ");
@@ -137,7 +137,7 @@ public class Main{
         fis = new FileInputStream(file);
         property.load(fis);
         DB_URL = property.getProperty("db.host");
-        username = property.getProperty("db.login");
+        username = property.getProperty("db.user");
         password = property.getProperty("db.password");
         fis.close();
     }
@@ -150,7 +150,6 @@ public class Main{
             System.err.println("ERROR: properties file doesn't exist!");
             return;
         }
-
         Integer quit = 0;
         while (quit == 0) {
             System.out.println("\n\n1-Developers info");
@@ -191,8 +190,8 @@ public class Main{
                     }
                     
                     try {
-                        dev_to_SQL(DB_URL, devs);
-                        dev_from_SQL(DB_URL, devs_out);
+                        dev_to_SQL(devs);
+                        dev_from_SQL(devs_out);
                         
                         try {
                             FileWriter fw = new FileWriter ("files/dev_output.csv");
@@ -239,8 +238,8 @@ public class Main{
                     }
                     
                     try {
-                        man_to_SQL(DB_URL, man);
-                        man_from_SQL(DB_URL, man_out);
+                        man_to_SQL(man);
+                        man_from_SQL(man_out);
                         
                         try {
                             FileWriter fw = new FileWriter ("files/man_output.csv");
@@ -289,8 +288,8 @@ public class Main{
                     }
                     
                     try {
-                        sal_to_SQL(DB_URL, sal);
-                        sal_from_SQL(DB_URL, sal_out);
+                        sal_to_SQL(sal);
+                        sal_from_SQL(sal_out);
                         try {
                             FileWriter fw = new FileWriter ("files/sales_output.csv");
                             for (int i = 0; i < sal_out.size(); ++i) {
