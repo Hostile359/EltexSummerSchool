@@ -142,12 +142,32 @@ public class Main{
         fis.close();
     }
 
+    public static void createTables() throws SQLException{
+        Connection connection = DriverManager.getConnection(DB_URL, username, password); //соединение с БД
+        Statement statement = connection.createStatement();
+        statement.execute("CREATE TABLE IF NOT EXISTS developer(id INTEGER(11) UNIQUE KEY, fio VARCHAR(50)," +
+                " phone VARCHAR(12), email VARCHAR(30), languages VARCHAR(30));");
+
+        statement.execute("CREATE TABLE IF NOT EXISTS manager(id INTEGER(11) UNIQUE KEY, fio VARCHAR(50)," +
+                " phone VARCHAR(12), email VARCHAR(25), sales VARCHAR(30));");
+
+        statement.execute("CREATE TABLE IF NOT EXISTS sales(id INTEGER(11) UNIQUE KEY, name VARCHAR(25), price INTEGER(11));");
+        connection.close(); // отключение от БД
+    }
+
     public static void main(String args[]) {
 
         try {
             getProp("src/main/resources/db.properties");
         } catch (IOException e) {
             System.err.println("ERROR: properties file doesn't exist!");
+            return;
+        }
+
+        try {
+            createTables();
+        } catch (SQLException e){
+            System.out.println(e.getMessage());
             return;
         }
         Integer quit = 0;
