@@ -2,12 +2,16 @@ package ru.eltex;
 
 import lombok.*;
 
-@Setter @Getter
+import javax.persistence.*;
+
+@MappedSuperclass
 abstract class User implements CSV{
-    protected Integer id;
-    protected String fio;
-    protected String phone;
-    protected String email;
+    @Id
+    @GeneratedValue
+    @Setter @Getter protected Integer id;
+    @Setter @Getter protected String fio;
+    @Setter @Getter protected String phone;
+    @Setter @Getter protected String email;
     
 
 }

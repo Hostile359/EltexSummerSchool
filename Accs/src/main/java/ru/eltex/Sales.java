@@ -1,9 +1,19 @@
 package ru.eltex;
 
+import lombok.Getter;
+import lombok.Setter;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
+@Entity
 public class Sales{
-    private Integer id;
-    private String name;
-    private Integer price;
+	@Id
+	@GeneratedValue
+	@Setter @Getter private Integer id;
+	@Setter @Getter private String name;
+	@Setter @Getter private Integer price;
     
     public void printInf() {
         
@@ -12,37 +22,6 @@ public class Sales{
         System.out.println("Sale price: " + this.price);
         System.out.println();
     }
-    
-    public Integer getId () {
-
-		return this.id;
-	}
-
-	public String getName () {
-
-		return this.name;
-	}
-
-	public Integer getPrice () {
-
-		return this.price;
-	}
-    
-    public void setId (String arg) {
-
-		this.id = Integer.valueOf(arg);
-	}
-	
-
-	public void setName (String arg) {
-
-		this.name = arg;
-	}
-
-	public void setPrice (String arg) {
-
-		this.price = Integer.valueOf(arg);
-	}
 
 	public String toCSV() {
 
@@ -53,9 +32,9 @@ public class Sales{
 
 		String [] arg = str.split(";");
         if(arg.length == 3) {
-            setId (arg [0]);
+            setId (Integer.valueOf(arg [0]));
             setName (arg [1]);
-            setPrice (arg [2]);
+            setPrice (Integer.valueOf(arg [2]));
         }else
             return -1;
             

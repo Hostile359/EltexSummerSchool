@@ -1,5 +1,11 @@
 package ru.eltex;
 
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.*;
+
+
 import java.util.ArrayList;
 import java.io.*;
 import java.util.Properties;
@@ -8,6 +14,7 @@ import java.sql.*;
 
 public class Main{
 
+    private static SessionFactory sessionFactory;
     private static String DB_URL;
     private static String username;
     private static String password;
@@ -121,9 +128,9 @@ public class Main{
         Integer j = 0;
         while (resultSet.next()){ // проход по полученным записям
             Sales temp = new Sales();
-            temp.setId(resultSet.getString("id"));
+            temp.setId(resultSet.getInt("id"));
             temp.setName(resultSet.getString("name"));
-            temp.setPrice(resultSet.getString("price"));            
+            temp.setPrice(resultSet.getInt("price"));
             temp.printInf();
             sales.add(temp);
         }
@@ -172,8 +179,116 @@ public class Main{
         connection.close(); // отключение от БД
     }
 
+    public static <T> void hib(ArrayList<T> u) throws Exception{
+        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
+        sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        u.forEach(us -> session.save(us));
+        //session.save(user1); session.save(user2);
+        session.getTransaction().commit();
+        session.close();
+        //StandardServiceRegistryBuilder.destroy(registry);
+    }
+
     public static void main(String args[]) {
 
+        ArrayList<Developer> devs = new ArrayList<Developer>();
+
+
+        /*try {
+            FileReader fr = new FileReader("files/dev.csv");
+            Scanner scan = new Scanner(fr);
+
+            for (int j = 0; scan.hasNextLine(); ++j) {
+                String input_str;
+                input_str = scan.nextLine();
+                System.out.println(input_str);
+                Developer temp = new Developer();
+                Integer check = temp.fromCSV(input_str);
+                if (check == 0) {
+                    devs.add(temp);
+                    devs.get(j).printInf();
+                } else
+                    System.out.println("Wrong format of string: " + temp);
+            }
+            System.out.println();
+        } catch (IOException error) {
+            System.out.println("Failed open file");
+            System.err.print(error.getMessage());
+        }
+
+        try {
+            hib(devs);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }*/
+
+        /*ArrayList<Manager> man = new ArrayList<Manager>();
+
+        try {
+            FileReader fr = new FileReader ("files/man.csv");
+            Scanner scan = new Scanner(fr);
+
+            for (int j = 0; scan.hasNextLine(); ++j) {
+                String input_str;
+                input_str = scan.nextLine();
+                System.out.println(input_str);
+                Manager temp = new Manager();
+                Integer check = temp.fromCSV(input_str);
+                if(check == 0) {
+                    man.add(temp);
+                    man.get(j).printInf();
+                }else
+                    System.out.println("Wrong format of string: " + temp);
+            }
+            System.out.println();
+
+        }
+        catch (IOException error) {
+            System.out.println("Failed open file");
+            System.err.print(error.getMessage());
+        }
+
+        try {
+            hib(man);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }*/
+
+        ArrayList<Sales> sal = new ArrayList<Sales>();
+
+        try {
+            FileReader fr = new FileReader ("files/sales.csv");
+            Scanner scan = new Scanner(fr);
+
+            for (int j = 0; scan.hasNextLine(); ++j) {
+                String input_str;
+                input_str = scan.nextLine();
+                System.out.println(input_str);
+                Sales temp = new Sales();
+                Integer check = temp.fromCSV(input_str);
+                if(check == 0) {
+                    sal.add(temp);
+                    sal.get(j).printInf();
+                }else
+                    System.out.println("Wrong format of string: " + temp);
+            }
+            System.out.println();
+
+        }
+        catch (IOException error) {
+            System.out.println("Failed open file");
+            System.err.print(error.getMessage());
+        }
+        try {
+            hib(sal);
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
+
+
+        /*
         try {
             getProp("src/main/resources/db.properties");
         } catch (IOException e) {
@@ -353,6 +468,6 @@ public class Main{
 
                 case 'q': { quit = 1; }
             }
-        }
+        }*/
     }
 }

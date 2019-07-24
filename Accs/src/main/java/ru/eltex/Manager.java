@@ -1,11 +1,16 @@
 package ru.eltex;
 
-import java.util.Scanner; 
+import javax.persistence.*;
+import java.util.List;
+import java.util.Scanner;
 import java.util.ArrayList;
 
+@Entity
 public class Manager extends User{
-    private ArrayList<Integer> sale_id = null;
-    private ArrayList<Integer> count_of_sales = null;
+    @ElementCollection
+    private List<Integer> sale_id = null;
+    @ElementCollection
+    private List<Integer> count_of_sales = null;
     Manager() { 
 		this.sale_id = new ArrayList<Integer>();
 		this.count_of_sales = new ArrayList<Integer>();
