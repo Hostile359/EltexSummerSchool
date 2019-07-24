@@ -59,7 +59,7 @@ public class Main{
         }
         end = System.nanoTime();
         res = (end - start) * dt;
-        System.out.printf(" %hi.6f" , res);
+        System.out.printf(" %.6f" , res);
         connection.close();
     }
 
