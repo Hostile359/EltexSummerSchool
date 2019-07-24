@@ -1,12 +1,15 @@
 package ru.eltex;
 
+import lombok.*;
+
+@Setter @Getter
 abstract class User implements CSV{
     protected Integer id;
     protected String fio;
     protected String phone;
     protected String email;
     
-    public Integer getId () {
+    /*public Integer getId () {
 
 		return this.id;
 	}
@@ -45,7 +48,7 @@ abstract class User implements CSV{
 	public void setEmail (String arg) {
 
 		this.email = arg;
-	}
+	}*/
 
     //public String toCSV();
     //public void fromCSV(String str);

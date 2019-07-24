@@ -41,7 +41,7 @@ public class Developer extends User{
 	public Integer fromCSV(String str) {
 		String [] arg = str.split(";");
         if(arg.length == 5) {
-            setId (arg [0]);
+            setId (Integer.valueOf(arg [0]));
             setFio (arg [1]);
             setPhone (arg [2]);
             setEmail (arg [3]);

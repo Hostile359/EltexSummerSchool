@@ -41,7 +41,7 @@ public class Main{
         Integer j = 0;
         while (resultSet.next()){ // проход по полученным записям
             Developer temp = new Developer();
-            temp.setId(resultSet.getString("id"));
+            temp.setId(resultSet.getInt("id"));
             temp.setFio(resultSet.getString("fio"));
             temp.setPhone(resultSet.getString("phone"));
             temp.setEmail(resultSet.getString("email"));
@@ -82,7 +82,7 @@ public class Main{
         Integer j = 0;
         while (resultSet.next()){ // проход по полученным записям
             Manager temp = new Manager();
-            temp.setId(resultSet.getString("id"));
+            temp.setId(resultSet.getInt("id"));
             temp.setFio(resultSet.getString("fio"));
             temp.setPhone(resultSet.getString("phone"));
             temp.setEmail(resultSet.getString("email"));
