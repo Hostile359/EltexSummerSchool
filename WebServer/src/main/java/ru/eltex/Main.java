@@ -8,7 +8,7 @@ import java.util.Scanner;
 class Main {
     public static void main(String[] args) {
         try {
-            String path = "/home/user/EltexSummerSchool/WebServer/src/resources/index.html";
+            String path = "src/resources/index.html";
             File file = new File(path);
             Scanner sc = new Scanner(file).useDelimiter("\0");
             String html = sc.next();
