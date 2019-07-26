@@ -3,15 +3,15 @@ package ru.eltex;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.OneToOne;
-import java.util.Scanner;
+import javax.persistence.*;
+import java.util.List;
 import java.util.ArrayList;
 
 @Entity
 public class Developer extends User{
-
-    private ArrayList<Languages> lang = null;
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @ElementCollection @CollectionTable(name="Languages")
+    @Getter @Setter private List<Languages> lang = null;
     Developer() { this.lang = new ArrayList<Languages>(); }
 
     public void printInf() {
@@ -28,7 +28,7 @@ public class Developer extends User{
         System.out.println();
     }
 
-    public String getLang() {
+    public String getStrLang() {
         String temp = "";
         for(int i = 0; i < this.lang.size(); i++)
             temp += this.lang.get(i).getName() + ">";
@@ -38,7 +38,7 @@ public class Developer extends User{
     }
 
     public String toCSV() {
-        String temp = this.getLang();
+        String temp = this.getStrLang();
         //for(int i = 0; i < this.lang.size(); i++)
         //temp += this.lang.get(i) + ">";
         //temp = temp.substring(0, temp.length() - 1);

@@ -10,9 +10,8 @@
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/hib</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">123</property>
-        <mapping class="ru.eltex.User"/>
+
         <mapping class="ru.eltex.Developer"/>
-        <mapping class="ru.eltex.Manager"/>
-        <mapping class="ru.eltex.Sales"/>
+        <mapping class="ru.eltex.Languages"/>
     </session-factory>
 </hibernate-configuration>
