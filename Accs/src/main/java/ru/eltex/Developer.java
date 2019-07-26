@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @Entity
 public class Developer extends User{
     @ManyToMany(cascade = { CascadeType.ALL })
-    @ElementCollection @CollectionTable(name="Languages")
+    @ElementCollection @CollectionTable(name="Dev_Langs")
     @Getter @Setter private List<Languages> lang = null;
     Developer() { this.lang = new ArrayList<Languages>(); }
 
