@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="http://code.jquery.com/jquery-3.4.1.js"> </script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"></link rel>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    </head>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $.get("/get_users",
+                function(data){
+                    var str = "";
+                    for(var i = 0; i < data.length; i++) {
+                        console.log(data[i]);
+                        str += data[i].id + ")" + data[i].fio + "<br>";
+                    }
+                    $(".users").html(str);
+                }
+            );
+        });
+
+        function getUser(event) {
+            $.get("/get_user/" + document.getElementById("id").value,
+                function(data){
+                    var str = "";
+                    console.log(data);
+                    str += "fio: " + data.fio + ", phone:" + data.phone + "<br>";
+                    $(".user").html(str);
+                }
+            );
+        }
+    </script>
+    <body>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                <div class="users"></div>
+                </div>
+                <div class="col-md-6">
+                    <input id="id" type="text"><br>
+                    <button onclick="getUser()">Click</button>
+                    <div class="user"></div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
