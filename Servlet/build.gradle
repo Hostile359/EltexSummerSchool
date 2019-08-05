@@ -26,6 +26,7 @@ dependencies {
 }
 
 dependencies {
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.+'
     compile "javax.servlet:javax.servlet-api:4.0.1"
     compile "javax.servlet.jsp:javax.servlet.jsp-api:2.3.3"
     compile "org.apache.tomcat.embed:tomcat-embed-core:9.0.22",
