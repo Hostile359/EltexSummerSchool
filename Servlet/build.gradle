@@ -1,0 +1,38 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.2'
+    }
+}
+
+plugins {
+    id 'java'
+    id 'war'
+}
+
+group 'Eltex'
+version '1'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+dependencies {
+    compile "javax.servlet:javax.servlet-api:4.0.1"
+    compile "javax.servlet.jsp:javax.servlet.jsp-api:2.3.3"
+    compile "org.apache.tomcat.embed:tomcat-embed-core:9.0.22",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:9.0.0.M6",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:9.0.22"
+}
+task deployToTomcat(type: Copy) {
+    from war.archivePath
+    into "/usr/local/tomcat9/webapps"
+}
