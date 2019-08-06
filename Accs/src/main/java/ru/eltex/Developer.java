@@ -1,17 +1,25 @@
 package ru.eltex;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.boot.MetadataSources;
+import org.hibernate.boot.registry.StandardServiceRegistry;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
 
 @Entity
+@AllArgsConstructor
 public class Developer extends User{
     @ManyToMany(cascade = { CascadeType.ALL })
-    @ElementCollection @CollectionTable(name="Dev_Langs")
-    @Getter @Setter private List<Languages> lang = null;
+    @Getter @Setter private List<Languages> lang;
+
+    @Transient private static StandardServiceRegistry registry;
+
     Developer() { this.lang = new ArrayList<Languages>(); }
 
     public void printInf() {
@@ -23,7 +31,7 @@ public class Developer extends User{
 
         System.out.print("Dev langs: ");
         for(int i = 0; i < this.lang.size(); i++)
-            System.out.print(this.lang.get(i).getName() + " ");
+            System.out.print("id " + this.lang.get(i).getId() + " " + this.lang.get(i).getName() + " ");
         System.out.println();
         System.out.println();
     }
@@ -45,7 +53,8 @@ public class Developer extends User{
         return Integer.toString(this.id) + ";" + this.fio + ";" + this.phone + ";" + this.email + ";" + temp + ";";
     }
 
-    public Integer fromCSV(String str) {
+    public Integer fromCSV(String str, StandardServiceRegistry registry) {
+        this.registry = registry;
         String [] arg = str.split(";");
         if(arg.length == 5) {
             setId (Integer.valueOf(arg [0]));
@@ -66,11 +75,23 @@ public class Developer extends User{
     }
 
     public void addLang (String arg) {
-        this.lang.forEach(l -> {
+        /*this.lang.forEach(l -> {
             if(arg.equals(l.getName()))
                 return;
-        });
-        Languages temp = new Languages(lang.size(), arg);
+        });*/
+
+        SessionFactory sessionFactory;
+        sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.beginTransaction();
+        //u.forEach(us -> { us.printInf(); session.save(us);});
+        //session.save(user1); session.save(user2);
+        session.getTransaction().commit();
+        session.close();
+        //StandardServiceRegistryBuilder.destroy(registry);
+
+        Languages temp = new Languages(arg);
+
         this.lang.add(temp);
     }
 

@@ -14,11 +14,13 @@ import java.sql.*;
 
 public class Main{
 
-    private static SessionFactory sessionFactory;
+
     private static String DB_URL;
     private static String username;
     private static String password;
-    
+
+    private static final StandardServiceRegistry registry =  new StandardServiceRegistryBuilder().configure().build();
+
     public static void dev_to_SQL(ArrayList<Developer> devs) throws SQLException{
         Connection connection = DriverManager.getConnection(DB_URL, username, password); //соединение с БД
         Statement statement = connection.createStatement();
@@ -180,13 +182,11 @@ public class Main{
     }
 
     public static void hib(ArrayList<Developer> u) throws Exception{
-        final StandardServiceRegistry registry = new StandardServiceRegistryBuilder().configure().build();
+        SessionFactory sessionFactory;
         sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
         Session session = sessionFactory.openSession();
         session.beginTransaction();
-        session.save(u.get(0));
-        session.save(u.get(1));
-        //u.forEach(us -> { us.printInf(); session.save(us);});
+        u.forEach(us -> { us.printInf(); session.save(us);});
         //session.save(user1); session.save(user2);
         session.getTransaction().commit();
         session.close();
@@ -194,7 +194,6 @@ public class Main{
     }
 
     public static void main(String args[]) {
-
 
 
         Integer quit = 0;
