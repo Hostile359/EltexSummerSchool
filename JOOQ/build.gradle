@@ -1,0 +1,52 @@
+plugins { id 'nu.studer.jooq' version '3.0.3' }
+
+apply plugin: 'java'
+apply plugin: 'application'
+
+mainClassName='ru.eltex.Main'
+
+repositories {
+    jcenter()
+}
+
+
+
+dependencies {
+    compile 'org.jooq:jooq'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.17'
+    jooqRuntime 'mysql:mysql-connector-java:+'
+}
+jooq {
+    version = "3.11.11"
+    sample(sourceSets.main) {
+        jdbc {
+            driver = "com.mysql.jdbc.Driver"
+            url = "jdbc:mysql://localhost:3306/hib"
+            user = "root"
+            password = "123"
+        }
+        generator {
+            name = "org.jooq.codegen.DefaultGenerator"
+            database {
+                name = "org.jooq.meta.mysql.MySQLDatabase"
+                inputSchema = "hib"
+                outputSchemaToDefault = true
+            }
+            generate {
+                relations = true
+                deprecated = false
+                records = true
+                immutablePojos = true
+                indexes = false
+                relations = false
+                globalObjectReferences = false
+                globalCatalogReferences = false
+                globalSchemaReferences = false
+            }
+            target {
+                packageName = "ru.eltex.database"
+                directory = "src/main/java"
+            }
+        }
+    }
+}
