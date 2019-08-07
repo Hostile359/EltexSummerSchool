@@ -11,14 +11,13 @@ import org.hibernate.boot.registry.StandardServiceRegistry;
 import javax.persistence.*;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 @Entity
 @AllArgsConstructor
 public class Developer extends User{
     @ManyToMany(cascade = { CascadeType.ALL })
     @Getter @Setter private List<Languages> lang;
-
-    @Transient private static StandardServiceRegistry registry;
 
     Developer() { this.lang = new ArrayList<Languages>(); }
 
@@ -31,7 +30,7 @@ public class Developer extends User{
 
         System.out.print("Dev langs: ");
         for(int i = 0; i < this.lang.size(); i++)
-            System.out.print("id " + this.lang.get(i).getId() + " " + this.lang.get(i).getName() + " ");
+            System.out.print("id{" + this.lang.get(i).getId() + "} " + this.lang.get(i).getName() + ", ");
         System.out.println();
         System.out.println();
     }
@@ -53,8 +52,7 @@ public class Developer extends User{
         return Integer.toString(this.id) + ";" + this.fio + ";" + this.phone + ";" + this.email + ";" + temp + ";";
     }
 
-    public Integer fromCSV(String str, StandardServiceRegistry registry) {
-        this.registry = registry;
+    public Integer fromCSV(String str) {
         String [] arg = str.split(";");
         if(arg.length == 5) {
             setId (Integer.valueOf(arg [0]));
@@ -79,20 +77,29 @@ public class Developer extends User{
             if(arg.equals(l.getName()))
                 return;
         });*/
-
-        SessionFactory sessionFactory;
-        sessionFactory = new MetadataSources(registry).buildMetadata().buildSessionFactory();
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
         //u.forEach(us -> { us.printInf(); session.save(us);});
         //session.save(user1); session.save(user2);
-        session.getTransaction().commit();
-        session.close();
+        //Languages language = session.createQuery("FROM Languages WHERE nam like '%" + arg + "%'");
+        /*Languages language = session.byNaturalId(Languages.class).using("name", arg).load();
+        //Languages temp1 = new Languages(arg);
+        //Integer idd = (Integer) session.getIdentifier(temp1);
+        //System.out.println("TUTUTUTUTUTU" + idd);
+
+        //Scanner in = new Scanner(System.in);
+        //Character op = in.next().charAt(0);
         //StandardServiceRegistryBuilder.destroy(registry);
+        Languages temp;
+        if (language == null) {
+            Integer id = Languages.getCounter_id();
+            temp = new Languages(id, arg);
+            Languages.setCounter_id(id + 1);
+            //session.save(temp);
+        }else {
+            temp = language;
+        }
+        this.lang.add(temp);*/
 
-        Languages temp = new Languages(arg);
-
-        this.lang.add(temp);
+        this.lang.add(Languages.getLang(arg));
     }
 
 }

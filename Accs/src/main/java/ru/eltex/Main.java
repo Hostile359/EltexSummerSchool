@@ -21,6 +21,8 @@ public class Main{
 
     private static final StandardServiceRegistry registry =  new StandardServiceRegistryBuilder().configure().build();
 
+
+
     public static void dev_to_SQL(ArrayList<Developer> devs) throws SQLException{
         Connection connection = DriverManager.getConnection(DB_URL, username, password); //соединение с БД
         Statement statement = connection.createStatement();
@@ -193,6 +195,7 @@ public class Main{
         //StandardServiceRegistryBuilder.destroy(registry);
     }
 
+
     public static void main(String args[]) {
 
 
@@ -224,6 +227,12 @@ public class Main{
                             Integer check = temp.fromCSV(input_str);
                             if (check == 0) {
                                 devs.add(temp);
+                                /*try {
+                                    hib1(temp);
+                                }catch (Exception e) {
+                                    System.out.println("Hib save err");
+                                    e.printStackTrace();
+                                }*/
                                 //devs.get(j).printInf();
                             } else
                                 System.out.println("Wrong format of string: " + temp);
@@ -233,6 +242,9 @@ public class Main{
                         System.out.println("Failed open file");
                         System.err.print(error.getMessage());
                     }
+                    devs.forEach(dev -> { System.out.println();
+                        dev.printInf();
+                        System.out.println();});
 
                     try {
                         devs.forEach(dev -> { System.out.println();
