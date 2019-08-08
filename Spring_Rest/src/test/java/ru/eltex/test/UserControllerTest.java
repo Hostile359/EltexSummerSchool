@@ -36,7 +36,6 @@ public class UserControllerTest {
         users.forEach(User::printInf);
         System.out.println();
         ObjectMapper mapper = new ObjectMapper();
-
         String expectedResult = mapper.writeValueAsString(users);
 
         this.mockMvc.perform(get("http://localhost:8081/get_users")).andDo(print()).andExpect(status().isOk())
@@ -45,13 +44,21 @@ public class UserControllerTest {
 
     @Test
     public void getUser() throws Exception {
+        User user = new User (1, "Brown", "+71231232323");
+        ObjectMapper mapper = new ObjectMapper();
+        String expectedResult = mapper.writeValueAsString(user);
+
         this.mockMvc.perform(get("http://localhost:8081/get_user?id=1")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Brown")));
+                .andExpect(content().string(expectedResult));
     }
 
     @Test
     public void getUser1() throws Exception {
+        User user = new User (1, "Brown", "+71231232323");
+        ObjectMapper mapper = new ObjectMapper();
+        String expectedResult = mapper.writeValueAsString(user);
+
         this.mockMvc.perform(get("http://localhost:8081/get_user/1")).andDo(print()).andExpect(status().isOk())
-                .andExpect(content().string(containsString("Brown")));
+                .andExpect(content().string(expectedResult));
     }
 }
