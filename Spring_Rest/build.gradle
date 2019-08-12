@@ -37,6 +37,10 @@ dependencies {
     testAnnotationProcessor 'org.projectlombok:lombok:1.18.8'
     testCompile'org.springframework.boot:spring-boot-starter-test'
     compile'org.springframework.boot:spring-boot-starter-thymeleaf'
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.1.7.RELEASE'
+    compile("org.springframework.security:spring-security-core")
+    compile("org.springframework.security:spring-security-web")
+    compile("org.springframework.security:spring-security-config")
 }
 
 

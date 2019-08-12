@@ -3,7 +3,7 @@
     <body>
         <p th:text="'Count of users: ' + ${users.size()} + '!'"></p>
         <ul th:each="user : ${users}">
-            <li th:text="${user.getFio()}"></li>
+            <li><button th:text="${user.getFio()}"></button></li>
         </ul>
     </body>
 </html>
