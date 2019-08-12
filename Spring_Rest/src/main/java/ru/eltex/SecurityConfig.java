@@ -14,16 +14,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
 // пользователи через оперативную память
         auth.inMemoryAuthentication()
-                .withUser("user").password("{noop}user").roles("USER")
-                .and()
-                .withUser("admin").password("{noop}admin").roles("ADMIN");
+                .withUser("admin").password("{noop}123").roles("ADMIN");
     }
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 // распределение прав
         http.authorizeRequests()
                 .antMatchers("/admin").access("hasRole('ROLE_ADMIN')")
-                .antMatchers("/bye").access("hasRole('ROLE_USER')")
                 .and()
                 .formLogin()
                 .defaultSuccessUrl("/");

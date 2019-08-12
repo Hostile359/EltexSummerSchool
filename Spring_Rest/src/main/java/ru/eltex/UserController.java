@@ -36,5 +36,11 @@ public class UserController {
 
         return crudRep.findById(id).get();
     }
+
+    @RequestMapping("/delete_user/{id}")
+    public void deleteUser(@PathVariable("id") Integer id) {
+        //System.out.println("ID   " + id);
+        crudRep.deleteById(id);
+    }
 }
 

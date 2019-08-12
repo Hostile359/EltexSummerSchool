@@ -1,7 +1,31 @@
 <!DOCTYPE>
 <html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <script src="http://code.jquery.com/jquery-3.4.1.js"> </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    </head>
+    <script type="text/javascript">
+        function remove(id) {
+            $.get("/delete_user/" + id,
+                function (data) {
+                    console.log(data);
+                }
+            );
+            $.get("/admin" ,
+                function (data) {
+                    console.log(data);
+                    $("html").html(data);
+                }
+            );
+        }
+    </script>
     <body>
-        <p th:text="'Hello, ' + ${name} + '!'"></p>
-        <p th:text="'Hello, ' + ${user.getFio()} + '!'"></p>
+    <p th:text="'Count of users: ' + ${users.size()} + '!'"></p>
+    <p>Click on user to delete:</p>
+    <ul th:each="user : ${users}">
+        <li>
+            <button th:text="${user.getFio()}" th:onclick="'remove(' + ${user.getId()} + ')'"></button>
+        </li>
+    </ul>
     </body>
 </html>
