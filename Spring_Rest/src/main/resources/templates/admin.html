@@ -22,8 +22,8 @@
     <body>
     <p th:text="'Count of users: ' + ${users.size()} + '!'"></p>
     <p>Click on user to delete:</p>
-    <ul th:each="user : ${users}">
-        <li>
+    <ul>
+        <li th:each="user : ${users}">
             <button th:text="${user.getFio()}" th:onclick="'remove(' + ${user.getId()} + ')'"></button>
         </li>
     </ul>

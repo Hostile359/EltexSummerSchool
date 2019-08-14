@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
     <body>
         <p th:text="'Count of users: ' + ${users.size()} + '!'"></p>
-        <ul th:each="user : ${users}">
-            <li th:text="${user.getFio()}"></li>
+        <ul>
+            <li th:each="user : ${users}" th:text="${user.getFio()}"></li>
         </ul>
     </body>
 </html>
