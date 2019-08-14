@@ -15,3 +15,14 @@ repositories {
     mavenLocal()
     mavenCentral()
 }
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    compileOnly 'org.projectlombok:lombok:1.18.8'
+    testCompile 'org.projectlombok:lombok:1.18.8'
+    annotationProcessor 'org.projectlombok:lombok:1.18.8'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.8'
+    compile 'io.vertx:vertx-core:3.8.0'
+    compile 'io.vertx:vertx-lang-groovy:3.8.0'
+    compile group: 'org.codehaus.jackson', name: 'jackson-mapper-asl', version: '1.9.+'
+}
