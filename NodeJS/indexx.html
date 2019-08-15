@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="node_modules/systemjs/dist/system.js"> </script>
+        <script src="node_modules/systemjs/dist/extras/named-register.js"></script>
+        <title>page</title>
+    </head>
+    <script>
+        System.import("/node_modules/jquery/dist/jquery.min.js")
+            .then(function (data) {
+                $(document).ready(function(){
+                    console.log("122334");
+                    $.get("http://localhost:8081/get_users",
+                        function(data){
+                            var str = "";
+                            for(var i = 0; i < data.length; i++) {
+                                console.log(data[i]);
+                                str += data[i].id + ")" + data[i].fio + "<br>";
+                            }
+                            $(".users").html(str);
+                        }
+                    );
+                });
+            }, function (error) {
+                console.log(error);
+            });
+    </script>
+    <body>
+        <p>Content from "http://localhost:8081/get_users":</p>
+        <div class="users"></div>
+    </body>
+</html>

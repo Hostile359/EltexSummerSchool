@@ -8,3 +8,6 @@ target
 gradlew
 gradlew.bat
 /JOOQ/src/main/java/ru/eltex/database
+node_modules
+package.json
+package-lock.json
